@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>러시아 문화권 국가들의 노동자 현황</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 100vh;
+            width: 100vw;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        const workerData = [
+            // 러시아 
+            { country: "Россия", lat: 62.28607380386633, lon: 93.94726640318694, foreignworkers: 5500000, link: "https://en.wikipedia.org/wiki/Moscow" },
+            // 우크라이나
+            { country: "Україна", lat: 49.40776744904234, lon: 34.18164079876995, foreignworkers: 2800000, link: "https://en.wikipedia.org/wiki/Kyiv" },
+            // 벨라루스
+            { country: "Беларусь", lat:52.962146176207334, lon: 27.191699579489956, foreignworkers: 1900000, link: "https://en.wikipedia.org/wiki/Minsk" },
+            // 우주베키스탄 
+            ,{ country: "O`zbekiston", lat: 42.098555975804544, lon :63.4026376386909, foreignworkers: 1600000}
+            
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const map = L.map('map').setView([55, 37], 5);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            workerData.forEach(location => {
+                const circleMarker = L.circleMarker([location.lat, location.lon], {
+                    radius: Math.sqrt(location.foreignworkers) / 200, // 반지름 키움
+                    fillColor: '#0000FF',
+                    color: '#0000FF',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.6
+                }).addTo(map)
+                .bindPopup(`
+                    <b>${location.country}</b><br>
+                    Workers: ${location.foreignworkers.toLocaleString()}<br>
+                    <a href="${location.link}" target="_blank">Learn more</a>
+                `)
+                .on('click', () => {
+                    window.open(location.link, '_blank');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
